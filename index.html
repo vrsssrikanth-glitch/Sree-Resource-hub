@@ -240,7 +240,7 @@
             <i data-lucide="book-marked" class="w-6 h-6 text-amber-500"></i>
             Textbooks & Academic Resources
           </h3>
-          <p class="text-sm text-slate-500 dark:text-slate-400">Recommended reading materials, lecture notes, lab manuals, and PDFs.</p>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Recommended reading materials, local PDFs, and Google Drive resources.</p>
         </div>
         <button onclick="switchTab('add')" class="hidden sm:flex items-center space-x-1.5 px-4 py-2 text-xs font-semibold bg-brand-blue hover:bg-brand-blueHover text-white rounded-lg transition-colors shadow-sm">
           <i data-lucide="plus" class="w-4 h-4 text-amber-400"></i>
@@ -259,7 +259,7 @@
             <i data-lucide="play-circle" class="w-6 h-6 text-amber-500"></i>
             Video Tutorials & Lectures
           </h3>
-          <p class="text-sm text-slate-500 dark:text-slate-400">Embedded YouTube video guides and hosted video resources.</p>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Embedded YouTube guides and local MP4 playback support.</p>
         </div>
         <button onclick="switchTab('add')" class="hidden sm:flex items-center space-x-1.5 px-4 py-2 text-xs font-semibold bg-brand-blue hover:bg-brand-blueHover text-white rounded-lg transition-colors shadow-sm">
           <i data-lucide="plus" class="w-4 h-4 text-amber-400"></i>
@@ -406,7 +406,7 @@
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
-      <div id="videoContainer" class="relative aspect-video w-full bg-black"></div>
+      <div id="videoContainer" class="relative aspect-video w-full bg-black flex items-center justify-center"></div>
 
       <div class="p-6">
         <div class="flex items-center space-x-2 text-xs text-amber-400 font-semibold uppercase tracking-wider mb-1" id="modalCategory">
@@ -415,6 +415,22 @@
         <h3 id="modalTitle" class="text-xl font-bold text-white mb-2">Video Title</h3>
         <p id="modalDescription" class="text-sm text-slate-300 leading-relaxed">Video description text...</p>
       </div>
+    </div>
+  </div>
+
+  <!-- PDF / Document Reader Modal -->
+  <div id="pdfModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-900 text-white rounded-2xl overflow-hidden max-w-5xl w-full h-[85vh] border border-slate-800 shadow-2xl relative flex flex-col">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950">
+        <div>
+          <span class="text-xs text-amber-400 font-semibold uppercase tracking-wider" id="pdfModalCategory">Textbook</span>
+          <h3 id="pdfModalTitle" class="text-lg font-bold text-white">Document Viewer</h3>
+        </div>
+        <button onclick="closePdfModal()" class="p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="pdfContainer" class="relative flex-1 w-full bg-black"></div>
     </div>
   </div>
 
@@ -481,30 +497,21 @@
         {
           id: 'b2',
           title: 'Modern Chemistry Lab Manual',
-          description: 'Standard lab procedures, safety protocols, and organic synthesis reference materials.',
+          description: 'Standard lab procedures, safety protocols, and organic synthesis reference materials (Supports local PDF & Google Drive).',
           tags: ['Chemistry Labs', 'Manuals'],
           author: 'Dept. of Chemical Sciences',
-          url: 'https://open.umn.edu/opentextbooks',
+          url: 'sample-manual.pdf', // Example local PDF or Google Drive share link
           image: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=600&q=80'
-        },
-        {
-          id: 'b3',
-          title: 'Designing Data-Intensive Applications',
-          description: 'The definitive guide to distributed system architectures, databases, and scalability.',
-          tags: ['PostgreSQL', 'Architecture'],
-          author: 'Martin Kleppmann',
-          url: 'https://dataintensive.net',
-          image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80'
         }
       ],
       videos: [
         {
           id: 'podcast_akashvani_2026',
           title: 'Akashvani AIR Interview: World Environmental Health Day',
-          description: 'Radio interview on Akashvani AIR Visakhapatnam (Yuvavani Programme with RJ Shivani) discussing healthy environment practices, environmental chemistry, and green living[cite: 4].',
+          description: 'Radio interview on Akashvani AIR Visakhapatnam (Yuvavani Programme with RJ Shivani) discussing healthy environment practices, environmental chemistry, and green living.',
           tags: ['Radio Interview', 'Akashvani AIR', 'Environmental Health', 'Media'],
           duration: 'Radio Broadcast',
-          url: 'interview_1.mp4', // Replace with your YouTube embed link or audio link
+          url: 'interview_1.mp4', // Local MP4 file running seamlessly in player
           image: 'interview_1.jpeg'
         },
         {
@@ -513,17 +520,8 @@
           description: 'Detailed walk-through of fractional distillation setup and lab measurements.',
           tags: ['Chemistry Labs'],
           duration: '12:10',
-          url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+          url: 'https://www.youtube.com/embed/dQw4w9WgXcQ', // YouTube embedded guide
           image: 'https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=600&q=80'
-        },
-        {
-          id: 'v3',
-          title: 'Music Fusion & Audio Synthesis Engine',
-          description: 'Exploring Web Audio API for custom sound wave synthesis and live acoustic beats.',
-          tags: ['Music Fusion', 'Web Apps'],
-          duration: '14:30',
-          url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-          image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80'
         }
       ]
     };
@@ -597,9 +595,11 @@
 
     window.onclick = function(event) {
       let modal = document.getElementById('aboutModal');
-      if (event.target === modal) {
-        closeAboutModal();
-      }
+      let vidModal = document.getElementById('videoModal');
+      let pdfModal = document.getElementById('pdfModal');
+      if (event.target === modal) closeAboutModal();
+      if (event.target === vidModal) closeVideoModal();
+      if (event.target === pdfModal) closePdfModal();
     }
 
     function saveData() {
@@ -724,6 +724,7 @@
       `).join('');
     }
 
+    // RENDER TEXTBOOKS (Supports Local PDFs and Google Drive Links)
     function renderBooks() {
       const grid = document.getElementById('libraryGrid');
       const filtered = appData.books.filter(matchesFilter);
@@ -735,7 +736,7 @@
 
       grid.innerHTML = filtered.map(item => `
         <div class="group bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
-          <div class="relative h-44 overflow-hidden bg-slate-100 dark:bg-slate-900">
+          <div class="relative h-44 overflow-hidden bg-slate-100 dark:bg-slate-900 cursor-pointer" onclick="openPdfModal('${item.id}')">
             <img src="${item.image || 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=600&q=80'}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             <div class="absolute top-3 left-3 bg-brand-blue/90 backdrop-blur-md text-amber-400 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md shadow-sm">
               Academic Read
@@ -746,15 +747,15 @@
               <div class="flex flex-wrap gap-1.5 mb-2">
                 ${(item.tags || []).map(t => `<span class="px-2 py-0.5 text-[10px] font-semibold tracking-wide rounded-md bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800">${t}</span>`).join('')}
               </div>
-              <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-blue transition-colors">${item.title}</h4>
+              <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-blue transition-colors cursor-pointer" onclick="openPdfModal('${item.id}')">${item.title}</h4>
               <p class="text-xs text-amber-600 dark:text-amber-400 font-medium mt-1">By ${item.author || 'Academic Author'}</p>
               <p class="text-xs text-slate-600 dark:text-slate-300 mt-2 line-clamp-2 leading-relaxed">${item.description}</p>
             </div>
             <div class="pt-4 mt-4 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between">
-              <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1.5 text-xs font-semibold text-brand-blue dark:text-blue-400 hover:text-amber-600">
+              <button onclick="openPdfModal('${item.id}')" class="inline-flex items-center space-x-1.5 text-xs font-semibold text-brand-blue dark:text-blue-400 hover:text-amber-600">
                 <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
-                <span>Open Resource PDF</span>
-              </a>
+                <span>Open / View PDF</span>
+              </button>
               <button onclick="deleteItem('books', '${item.id}')" class="text-slate-400 hover:text-rose-500 transition-colors p-1" title="Delete Resource">
                 <i data-lucide="trash-2" class="w-4 h-4"></i>
               </button>
@@ -764,6 +765,7 @@
       `).join('');
     }
 
+    // RENDER VIDEOS (Supports Local MP4 and YouTube Links)
     function renderVideos() {
       const grid = document.getElementById('videosGrid');
       const filtered = appData.videos.filter(matchesFilter);
@@ -795,10 +797,10 @@
               <p class="text-xs text-slate-600 dark:text-slate-300 mt-2 line-clamp-2 leading-relaxed">${item.description}</p>
             </div>
             <div class="pt-4 mt-4 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between">
-              <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1.5 text-xs font-semibold text-brand-blue dark:text-blue-400 hover:text-amber-600">
+              <button onclick="openVideoModal('${item.id}')" class="inline-flex items-center space-x-1.5 text-xs font-semibold text-brand-blue dark:text-blue-400 hover:text-amber-600">
                 <i data-lucide="play-circle" class="w-4 h-4"></i>
-                <span>Play / Download Video</span>
-              </a>
+                <span>Play Video / Media</span>
+              </button>
               <button onclick="deleteItem('videos', '${item.id}')" class="text-slate-400 hover:text-rose-500 transition-colors p-1" title="Delete Video">
                 <i data-lucide="trash-2" class="w-4 h-4"></i>
               </button>
@@ -818,6 +820,7 @@
       `;
     }
 
+    // Video Modal Player (Handles YouTube & Local MP4 smoothly)
     function openVideoModal(id) {
       const video = appData.videos.find(v => v.id === id);
       if (!video) return;
@@ -838,8 +841,9 @@
           <iframe src="${videoUrl}?autoplay=1" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         `;
       } else {
+        // Local MP4 Player Support
         container.innerHTML = `
-          <video src="${videoUrl}" controls autoplay class="w-full h-full object-contain"></video>
+          <video src="${videoUrl}" controls autoplay playsinline class="w-full h-full object-contain max-h-[70vh]"></video>
         `;
       }
 
@@ -851,6 +855,51 @@
       const modal = document.getElementById('videoModal');
       modal.classList.add('hidden');
       document.getElementById('videoContainer').innerHTML = '';
+    }
+
+    // PDF / Document Reader Modal (Handles Local PDFs and Google Drive Links)
+    function openPdfModal(id) {
+      const book = appData.books.find(b => b.id === id);
+      if (!book) return;
+
+      document.getElementById('pdfModalTitle').textContent = book.title;
+      document.getElementById('pdfModalCategory').textContent = (book.tags && book.tags[0]) ? book.tags[0] : 'Textbook';
+
+      const container = document.getElementById('pdfContainer');
+      let targetUrl = book.url;
+
+      // Format Google Drive sharing link to preview/embed mode automatically
+      if (targetUrl.includes('drive.google.com') && targetUrl.includes('/view')) {
+        targetUrl = targetUrl.replace('/view?usp=sharing', '/preview').replace('/view', '/preview');
+      }
+
+      if (targetUrl.includes('drive.google.com') || targetUrl.includes('docs.google.com')) {
+        container.innerHTML = `
+          <iframe src="${targetUrl}" class="w-full h-full border-0" allow="autoplay"></iframe>
+        `;
+      } else if (targetUrl.endsWith('.pdf') || targetUrl.startsWith('http') || targetUrl.includes('/')) {
+        container.innerHTML = `
+          <iframe src="${targetUrl}" class="w-full h-full border-0"></iframe>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="flex flex-col items-center justify-center h-full p-8 text-center">
+            <p class="text-base font-medium mb-4">Click below to open or download this resource directly.</p>
+            <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-xl shadow-md transition-all">
+              Open PDF Document
+            </a>
+          </div>
+        `;
+      }
+
+      document.getElementById('pdfModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closePdfModal() {
+      const modal = document.getElementById('pdfModal');
+      modal.classList.add('hidden');
+      document.getElementById('pdfContainer').innerHTML = '';
     }
 
     function updateFormFields() {
@@ -868,15 +917,15 @@
         extraLabel.textContent = 'Star Count';
         extraInput.placeholder = 'e.g. 150';
       } else if (type === 'book') {
-        urlLabel.textContent = 'Textbook / PDF Link';
-        urlInput.placeholder = 'https://example.com/textbook.pdf';
-        urlHint.textContent = 'Direct link to online PDF or reading resource.';
+        urlLabel.textContent = 'Textbook PDF / Google Drive URL';
+        urlInput.placeholder = 'sample.pdf or https://drive.google.com/...';
+        urlHint.textContent = 'Local PDF filename or Google Drive shared link.';
         extraLabel.textContent = 'Author / Publisher';
         extraInput.placeholder = 'e.g. Prof. Alan Turing';
       } else if (type === 'video') {
-        urlLabel.textContent = 'Video Stream Embed / MP4 URL';
-        urlInput.placeholder = 'https://www.youtube.com/embed/xyz123';
-        urlHint.textContent = 'YouTube embed URL or direct MP4 link.';
+        urlLabel.textContent = 'YouTube Embed / Local MP4 Filename';
+        urlInput.placeholder = 'interview_1.mp4 or https://youtube.com/embed/...';
+        urlHint.textContent = 'Local MP4 video file or YouTube embed link.';
         extraLabel.textContent = 'Video Duration';
         extraInput.placeholder = 'e.g. 15:30';
       }
