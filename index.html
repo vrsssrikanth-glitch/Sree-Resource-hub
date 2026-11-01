@@ -841,16 +841,29 @@
           <iframe src="${videoUrl}?autoplay=1" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         `;
       } else {
-        // Local MP4 Player Support
+        // Updated HTML5 local MP4 player setup with metadata listener
         container.innerHTML = `
-          <video src="${videoUrl}" controls autoplay playsinline class="w-full h-full object-contain max-h-[70vh]"></video>
+          <video id="activeModalVideo" src="${videoUrl}" controls autoplay playsinline preload="metadata" class="w-full h-full object-contain max-h-[70vh]"></video>
         `;
+
+        const vidEl = document.getElementById('activeModalVideo');
+        vidEl.addEventListener('loadedmetadata', () => {
+          const totalSecs = Math.floor(vidEl.duration);
+          if (!isNaN(totalSecs)) {
+            const mins = Math.floor(totalSecs / 60);
+            const secs = totalSecs % 60;
+            const formattedDuration = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            
+            // Updates duration display live when metadata is ready
+            video.duration = formattedDuration;
+            renderVideos();
+          }
+        });
       }
 
       document.getElementById('videoModal').classList.remove('hidden');
       lucide.createIcons();
     }
-
     function closeVideoModal() {
       const modal = document.getElementById('videoModal');
       modal.classList.add('hidden');
