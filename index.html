@@ -816,6 +816,61 @@
       modal.classList.add('hidden');
       document.getElementById('videoContainer').innerHTML = '';
     }
+    <!-- About Me Modal Popup -->
+<div id="aboutModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-white dark:bg-gray-900 border border-amber-500/30 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative animate-fade-in">
+    
+    <!-- Close Button -->
+    <button onclick="closeAboutModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-white">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+
+    <!-- Modal Header with Profile Image -->
+    <div class="flex items-center space-x-4 mb-4">
+      <img src="google -scholar profile pic.jpg" alt="Profile" class="w-16 h-16 rounded-full object-cover border-2 border-amber-600 shadow-md">
+      <div>
+        <h3 class="text-lg font-bold text-[#1E3A8A] dark:text-blue-400">Dr. Rama Satya Sarveswara Srikanth Vemuri</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400">Chemistry Educator & Full-Stack Academic Developer</p>
+      </div>
+    </div>
+
+    <!-- Bio / Content Description -->
+    <div class="space-y-3 text-sm text-gray-700 dark:text-gray-300 border-t border-gray-100 dark:border-gray-800 pt-4">
+      <p>
+        <span class="font-semibold text-amber-700 dark:text-amber-400">Professional Focus:</span> Dedicated academic educator and faculty member in chemistry, managing institutional coursework, curriculum design, and Outcome-Based Education (OBE) frameworks like Course Outcome to Program Outcome mapping.
+      </p>
+      <p>
+        <span class="font-semibold text-amber-700 dark:text-amber-400">Technical Expertise:</span> Full-stack developer specializing in building interactive educational platforms, automated classroom management tools, and virtual chemistry simulations using Python, Streamlit, JavaScript, and Supabase.
+      </p>
+    </div>
+
+    <!-- Modal Footer Actions -->
+    <div class="mt-6 flex justify-end space-x-3">
+      <button onclick="closeAboutModal()" class="px-4 py-2 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-xs font-medium hover:bg-gray-300 transition">
+        Close
+      </button>
+      <a href="mailto:your-email@example.com" class="px-4 py-2 bg-[#1E3A8A] text-white rounded-lg text-xs font-medium hover:bg-blue-900 transition shadow">
+        Get in Touch
+      </a>
+    </div>
+
+  </div>
+</div>
+    function openAboutModal() {
+  document.getElementById('aboutModal').classList.remove('hidden');
+}
+
+function closeAboutModal() {
+  document.getElementById('aboutModal').classList.add('hidden');
+}
+
+// Optional: Close modal if user clicks outside the modal box
+window.onclick = function(event) {
+  let modal = document.getElementById('aboutModal');
+  if (event.target === modal) {
+    closeAboutModal();
+  }
+}
 
     // Dynamic Form UI Updates
     function updateFormFields() {
