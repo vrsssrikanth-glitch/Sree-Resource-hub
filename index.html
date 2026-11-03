@@ -410,34 +410,38 @@
           id: 'b3',
           title: 'A Handbook of Engineering Chemistry',
           description: 'Engineering Chemistry textbook for 1st year Mechanical and Civil Engineering Students.',
-          tags: ['Engineering Cehmistry', 'R20', 'JNTU-GV', 'Textbook'],
-          auhtor:'Dr. R. S. S. Srikanth Vemuri & Dr. Bhargavi Kondapalli',
-          url:'tb3.pdf'
+          tags: ['Engineering Chemistry', 'R20', 'JNTU-GV', 'Textbook'],
+          author: 'Dr. R. S. S. Srikanth Vemuri & Dr. Bhargavi Kondapalli',
+          url: 'tb3.pdf',
+          image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=600&q=80'
         },
         {
           id: 'b4',
-          title: ' A Study Material for Applied Chemistry',
+          title: 'A Study Material for Applied Chemistry',
           description: 'Applied Chemistry textbook for 1st year CSE, ECE, IT and EEE engineering Students.',
           tags: ['Applied Chemistry', 'R20', 'JNTU-GV', 'Textbook'],
-          auhtor: ['Dr. R. S. S. Srikanth Vemuri', 'Dr. Madhavi Konni'],
-          url: 'tb1.pdf'
-        }
+          author: 'Dr. R. S. S. Srikanth Vemuri, Dr. Madhavi Konni',
+          url: 'tb1.pdf',
+          image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=600&q=80'
+        },
         {
           id: 'b6',
-          title: ' Foundations of Environmental Studies: Principles, Challenges and Sustainable Practices ',
+          title: 'Foundations of Environmental Studies: Principles, Challenges and Sustainable Practices',
           description: 'Environmental Studies textbook for engineering Students.',
-          tags: ['Environtmental Studies', 'ES', 'R23', 'R26', 'JNTU-GV', 'Textbook'],
-          auhtor: 'Ms. K. Lavanya, Ms. Akella Ramya, Dr. R. S. S. Srikanth Vemuri, Mrs. Varalakshmi Potala',
-          url: 'tb4.pdf'
+          tags: ['Environmental Studies', 'ES', 'R23', 'R26', 'JNTU-GV', 'Textbook'],
+          author: 'Ms. K. Lavanya, Ms. Akella Ramya, Dr. R. S. S. Srikanth Vemuri, Mrs. Varalakshmi Potala',
+          url: 'tb4.pdf',
+          image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=600&q=80'
         },
         {
           id: 'b5',
-          title: ' Fundamentals and Applications of Chemsitry: Exam Preparation Guide',
+          title: 'Fundamentals and Applications of Chemistry: Exam Preparation Guide',
           description: 'Applied Chemistry textbook for 1st year CSE, ECE, IT and EEE engineering Students.',
           tags: ['Applied Chemistry', 'R23', 'JNTU-GV', 'Textbook'],
-          auhtor: 'Dr. R. S. S. Srikanth Vemuri',
-          url: 'tb2.pdf'
-        },
+          author: 'Dr. R. S. S. Srikanth Vemuri',
+          url: 'tb2.pdf',
+          image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=600&q=80'
+        }
       ],
       videos: [
         {
@@ -638,7 +642,9 @@
       const filtered = appData.books.filter(matchesFilter);
       if (filtered.length === 0) { grid.innerHTML = getEmptyState('No textbooks or readings found.'); return; }
 
-      grid.innerHTML = filtered.map(item => `
+      grid.innerHTML = filtered.map(item => {
+        const authorText = Array.isArray(item.author) ? item.author.join(', ') : (item.author || 'Academic Author');
+        return `
         <div class="group bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
           <div class="relative w-full aspect-[4/3] overflow-hidden bg-slate-100 dark:bg-slate-900 cursor-pointer" onclick="openPdfModal('${item.id}')">
             <img src="${item.image || 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=600&q=80'}" alt="${item.title}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
@@ -650,7 +656,7 @@
                 ${(item.tags || []).map(t => `<span class="px-2 py-0.5 text-[10px] font-semibold tracking-wide rounded-md bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800">${t}</span>`).join('')}
               </div>
               <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-blue transition-colors cursor-pointer" onclick="openPdfModal('${item.id}')">${item.title}</h4>
-              <p class="text-xs text-amber-600 dark:text-amber-400 font-medium mt-1">By ${item.author || 'Academic Author'}</p>
+              <p class="text-xs text-amber-600 dark:text-amber-400 font-medium mt-1">By ${authorText}</p>
               <p class="text-xs text-slate-600 dark:text-slate-300 mt-2 line-clamp-2 leading-relaxed">${item.description}</p>
             </div>
             <div class="pt-4 mt-4 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between">
@@ -664,7 +670,8 @@
             </div>
           </div>
         </div>
-      `).join('');
+      `;
+      }).join('');
     }
 
     function renderVideos() {
@@ -821,7 +828,7 @@
 
       if (targetUrl.includes('drive.google.com') || targetUrl.includes('docs.google.com')) {
         container.innerHTML = `<iframe src="${targetUrl}" class="w-full h-full border-0" allow="autoplay"></iframe>`;
-      } else if (targetUrl.endsWith('.pdf') || targetUrl.startsWith('http') || targetUrl.includes('/')) {
+      } else if (targetUrl.toLowerCase().endsWith('.pdf') || targetUrl.startsWith('http') || targetUrl.includes('/')) {
         container.innerHTML = `<iframe src="${targetUrl}" class="w-full h-full border-0"></iframe>`;
       } else {
         container.innerHTML = `
