@@ -457,9 +457,10 @@
           id: 'v2',
           title: 'Demo about AI-Personalised Learning app',
           description: 'Presentation about AI-Personalised Learning app.',
-          tags: ['python', 'AI', 'streamlit', ;Github],
+          tags: ['python', 'AI', 'streamlit', 'GitHub'],
           duration: '7:44',
-          url: 'https://drive.google.com/file/d/1OFv8g1Q2FS3MBsetM228KVFXzc-y_GHN/view?usp=drive_link'
+          url: 'https://drive.google.com/file/d/1OFv8g1Q2FS3MBsetM228KVFXzc-y_GHN/view?usp=drive_link',
+          image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80'
         }
       ]
     };
@@ -720,7 +721,7 @@
         </div>`;
     }
 
-    // ===== VIDEO MODAL (YouTube / Vimeo / local MP4) =====
+    // ===== VIDEO MODAL (YouTube / Vimeo / Google Drive / local MP4) =====
     function openVideoModal(id) {
       const video = appData.videos.find(v => v.id === id);
       if (!video || !video.url) return;
@@ -733,6 +734,7 @@
       const container = document.getElementById('videoContainer');
       const videoUrl = video.url.trim();
       const isYouTubeOrVimeo = /(youtube\.com|youtu\.be|vimeo\.com)/i.test(videoUrl);
+      const isGoogleDrive = videoUrl.includes('drive.google.com') || videoUrl.includes('docs.google.com');
 
       if (isYouTubeOrVimeo) {
         let embedUrl = videoUrl;
@@ -753,6 +755,18 @@
             title="${video.title.replace(/"/g, '&quot;')}"
             class="w-full h-full border-0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+            allowfullscreen></iframe>`;
+      } else if (isGoogleDrive) {
+        let embedUrl = videoUrl;
+        if (embedUrl.includes('/view')) {
+          embedUrl = embedUrl.replace('/view?usp=sharing', '/preview').replace('/view?usp=drive_link', '/preview').replace('/view', '/preview');
+        }
+        container.innerHTML = `
+          <iframe
+            src="${embedUrl}"
+            title="${video.title.replace(/"/g, '&quot;')}"
+            class="w-full h-full border-0"
+            allow="autoplay"
             allowfullscreen></iframe>`;
       } else {
         const safeVideoUrl = encodeURI(videoUrl);
