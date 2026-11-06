@@ -357,6 +357,48 @@
   </footer>
 
   <script>
+    const GITHUB_USERNAME = "vrsssrikanth-glitch";
+
+    async function loadGitHubProjects() {
+      const projects = [];
+      let page = 1;
+
+      while (true) {
+        const response = await fetch(
+          `https://api.github.com/users/${GITHUB_USERNAME}/repos?type=owner&per_page=100&page=${page}&sort=updated`
+        );
+
+        if (!response.ok) {
+          throw new Error("Unable to fetch GitHub repositories");
+        }
+
+        const repositories = await response.json();
+
+        if (repositories.length === 0) break;
+
+        projects.push(
+          ...repositories.map((repo, index) => ({
+            id: `p${projects.length + index + 1}`,
+            title: repo.name,
+            description:
+              repo.description || "GitHub project and development repository.",
+            tags: [
+              repo.language || "Other",
+              ...(repo.topics || [])
+            ],
+            stars: repo.stargazers_count,
+            url: repo.html_url,
+            image: `https://opengraph.githubassets.com/1/${repo.full_name}`
+          }))
+        );
+
+        if (repositories.length < 100) break;
+        page++;
+      }
+
+      return projects;
+    }
+
     const DEFAULT_DATA = {
       projects: [
         {
@@ -486,10 +528,20 @@
     let activeTag = 'all';
     let searchQuery = '';
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
       initTheme();
       renderAllData();
+
+      try {
+        const githubRepos = await loadGitHubProjects();
+        if (githubRepos && githubRepos.length > 0) {
+          appData.projects = githubRepos;
+          saveData();
+        }
+      } catch (err) {
+        console.warn("Could not fetch live GitHub repositories, using fallback data.", err);
+      }
     });
 
     function initTheme() {
